@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Статья: {{ article }}{% endblock %}
+{% block title %}Статья: {{ article['title'] }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -17,9 +17,9 @@
                     <div class="article-detail col-sm-12">
                         <div class="col-sm-12 p-2">
                             <div class="media d-flex align-content-center">
-                                <img class="article-detail-image align-self-start mr-3 rounded" src="{{ asset('images/article-1.jpeg') }}">
+                                <img class="article-detail-image align-self-start mr-3 rounded" src="{{ asset(article['image']) }}">
                                 <div class="media-body d-inline-block align-self-center">
-                                    <h1 class="mb-2">{{ article }}</h1>
+                                    <h1 class="mb-2">{{ article['title']|capitalize }}</h1>
                                     <div class="d-flex mb-2">
                                         <div class="text-muted align-self-center">
                                             <img class="article-author-img rounded-circle mr-2" src="https://robohash.org/флекс_абсолютович.jpg?set=set3">

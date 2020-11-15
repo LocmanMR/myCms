@@ -9,73 +9,30 @@
                 <div class="row">
                     <div class="col-md-12 col-xl-8">
 
-                        <div class="article-container mb-2">
-                            <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
-                                <div class="col-auto d-block">
-                                    <img class="article-img" src="{{ asset('images/article-1.jpeg') }}">
+                        {% for article in articles %}
+                            <div class="article-container mb-2">
+                                <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
+                                    <div class="col-auto d-block">
+                                        <img class="article-img" src="{{ asset(article['image']) }}">
+                                    </div>
+                                    <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: article['slug'] }) }}">
+                                        <h5 class="mb-2">{{ article['title']|capitalize }}</h5>
+                                        <div class="d-flex mb-2">
+                                            <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/хэтээмэль_цеэсесович.png?set=set3"> IRR </div>
+                                            <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 3 дня назад</div>
+                                        </div>
+                                        <div class="mb-2 d-flex">
+                                            <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 5</span>
+                                            <span class="badge badge-pill badge-secondary mr-2">Php 7.4</span>
+                                            <span class="badge badge-pill badge-secondary mr-2">Symfony</span>
+                                        </div>
+                                        <div class="mb-2 text-muted">
+                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting  industry. Lorem Ipsu…</p>
+                                        </div>
+                                    </a>
                                 </div>
-                                <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: 'article-1' }) }}">
-                                    <h5 class="mb-2">Что делать, если надо верстать?</h5>
-                                    <div class="d-flex mb-2">
-                                        <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/хэтээмэль_цеэсесович.png?set=set3"> Хэтээмэль Цеэсесович</div>
-                                        <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 3 дня назад</div>
-                                    </div>
-                                    <div class="mb-2 d-flex">
-                                        <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 5</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Html</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Css</span>
-                                    </div>
-                                    <div class="mb-2 text-muted">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting  industry. Lorem Ipsu…</p>
-                                    </div>
-                                </a>
                             </div>
-                        </div>
-                        <div class="article-container mb-2">
-                            <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
-                                <div class="col-auto d-block">
-                                    <img class="article-img" src="{{ asset('images/article-2.jpeg') }}">
-                                </div>
-                                <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: 'article-2' }) }}">
-                                    <h5 class="mb-2">Facebook ест твои данные</h5>
-                                    <div class="d-flex mb-2">
-                                        <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/not_facebook.png?set=set3"> Not Facebook</div>
-                                        <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 26 дней назад</div>
-                                    </div>
-                                    <div class="mb-2 d-flex">
-                                        <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 0</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Facebook</span>
-                                    </div>
-                                    <div class="mb-2 text-muted">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting  industry. Lorem Ipsu…</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="article-container mb-2">
-                            <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
-                                <div class="col-auto d-block">
-                                    <img class="article-img" src="{{ asset('images/article-3.jpg') }}">
-                                </div>
-                                <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: 'article-3' }) }}">
-                                    <h5 class="mb-2">Когда пролил кофе на клавиатуру</h5>
-                                    <div class="d-flex mb-2">
-                                        <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/поливайкин.png?set=set3"> Поливайкин</div>
-                                        <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 1 месяц назад</div>
-                                    </div>
-                                    <div class="mb-2 d-flex">
-                                        <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 300</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Балбес</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Криворучка</span>
-                                        <span class="badge badge-pill badge-secondary mr-2">Рукопоп</span>
-                                    </div>
-                                    <div class="mb-2 text-muted">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting  industry. Lorem Ipsu…</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
                     <div class="col-md-12 col-xl-4">
@@ -84,7 +41,7 @@
                         </div>
                         <div class="quotes-container bg-white shadow-sm border border-top-0 pb-2 pt-2 px-5">
                             <div class="border-bottom mb-3">
-                                <div class="h4 text-left"># Когда пролил кофе на клавиатуру</div>
+                                <div class="h4 text-left"># Что делать, когда пришлось верстать сайт?</div>
                                 <p><i class="far fa-comment text-secondary"></i> "Очень жизненно, аж прослезился"
                                     <br> — <a href="#">Василий ПиЭйчПи, Программист Ruby</a></p>
                             </div>
@@ -97,9 +54,9 @@
 
 
                             <div>
-                                <div class="h4 text-left"># Что делать, если надо верстать?</div>
+                                <div class="h4 text-left"># Php - не язык программирования</div>
                                 <p><i class="far fa-comment text-secondary"></i> "Ой, я сайт перепутал"
-                                    <br> — <a href="#">Барон Сосискин, Дегустатор сосисок</a></p>
+                                    <br> — <a href="#">Барон Сосискин, Программист Python</a></p>
                             </div>
                         </div>
                     </div>

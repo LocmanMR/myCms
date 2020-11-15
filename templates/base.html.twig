@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/ico" sizes="16x16" href="/favicon.ico">
+    <link rel="icon" type="image/ico" sizes="16x16" href="{{ asset('ico/favicon.ico') }}">
     {% block stylesheets %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -15,7 +15,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container py-2">
 
-        <a class="navbar-brand" href="/"><i class="fas fa-coffee text-muted"></i> Spill-Coffee-On-The-Keyboard  <i class="fas fa-keyboard text-muted"></i></a>
+        <a class="navbar-brand" href="{{ path('app_homepage') }}"><i class="fas fa-coffee text-muted"></i> Spill-Coffee-On-The-Keyboard  <i class="fas fa-keyboard text-muted"></i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,7 +29,7 @@
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="nav-profile-img rounded-circle" src="/images/profile.png">
+                        <img class="nav-profile-img rounded-circle" src="{{ asset('images/profile.png') }}">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/profile.html">Профиль</a>
@@ -52,7 +52,7 @@
 
 <footer class="footer bg-white">
     <div class="container text-center">
-        <span class="text-muted"><b>Spill-Coffee-On-The-Keyboard</b> - учебный проект для домашнего задания по курсу Symfony</span>
+        <span class="text-muted"><b>IRR php developer</b> - israfilov.ruslan2018@yandex.ru</span>
     </div>
 </footer>
 

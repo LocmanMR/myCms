@@ -13,10 +13,10 @@
                             <div class="article-container mb-2">
                                 <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
                                     <div class="col-auto d-block">
-                                        <img class="article-img" src="{{ asset(article['image']) }}">
+                                        <img class="article-img" src="{{ asset(article.image) }}">
                                     </div>
-                                    <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: article['slug'] }) }}">
-                                        <h5 class="mb-2">{{ article['title']|capitalize }}</h5>
+                                    <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: article.slug }) }}">
+                                        <h5 class="mb-2">{{ article.title|capitalize }}</h5>
                                         <div class="d-flex mb-2">
                                             <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/хэтээмэль_цеэсесович.png?set=set3"> IRR </div>
                                             <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 3 дня назад</div>

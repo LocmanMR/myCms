@@ -31,7 +31,7 @@ class ArticleProvider
     ];
 
     private MarkdownParser $markdownParser;
-    private ArticleContentProviderService $articleContentProvider;
+    private ArticleContentProviderInterface $articleContentProvider;
     private LoggerInterface $logger;
 
     public function __construct(

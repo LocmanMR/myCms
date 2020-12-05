@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BaseArticleController extends AbstractController
 {
 
-    private $articleProvider;
+    private ArticleProvider $articleProvider;
 
     public function __construct(ArticleProvider $articleProvider)
     {

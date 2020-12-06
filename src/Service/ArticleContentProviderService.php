@@ -17,7 +17,7 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         'Tristique et egestas quis ipsum. Consequat semper viverra nam.',
     ];
 
-    private $wordsMark;
+    private string $wordsMark;
 
     public function __construct(string $wordsMark)
     {

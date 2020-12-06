@@ -10,22 +10,10 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class MarkdownParser
 {
-    /**
-     * @var Parsedown
-     */
-    private $parsedown;
-    /**
-     * @var AdapterInterface
-     */
-    private $cache;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-    /**
-     * @var bool
-     */
-    private $debug;
+    private Parsedown $parsedown;
+    private AdapterInterface $cache;
+    private LoggerInterface $logger;
+    private bool $debug;
 
     public function __construct(
         Parsedown $parsedown,

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+
 namespace App\Controller;
 
 
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BaseArticleController extends AbstractController
 {
 
-    private $articleProvider;
+    private ArticleProvider $articleProvider;
 
     public function __construct(ArticleProvider $articleProvider)
     {

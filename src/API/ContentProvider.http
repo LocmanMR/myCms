@@ -1,0 +1,3 @@
+GET https://localhost:8000/api/v1/article_content?paragraphs=3&word=Hello&wordCount=2
+Accept: application/json
+Cache-Control: no-cache

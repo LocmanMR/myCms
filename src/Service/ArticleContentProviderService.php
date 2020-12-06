@@ -66,7 +66,7 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         }
 
         if ($this->wordsMark === 'italics') {
-            return '<i>' . $word . '</i>';
+            return '*' . $word . '*';
         }
 
         return $word;

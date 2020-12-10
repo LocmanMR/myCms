@@ -30,16 +30,13 @@ class ArticleProvider
         ],
     ];
 
-    private MarkdownParser $markdownParser;
     private ArticleContentProviderInterface $articleContentProvider;
     private LoggerInterface $logger;
 
     public function __construct(
-        MarkdownParser $markdownParser,
         ArticleContentProviderInterface $articleContentProvider,
         LoggerInterface $logger
     ) {
-        $this->markdownParser = $markdownParser;
         $this->articleContentProvider = $articleContentProvider;
         $this->logger = $logger;
     }
@@ -51,10 +48,8 @@ class ArticleProvider
 
     public function article(): array
     {
-        $articleContent = $this->getArticleContent();
-
         $article = self::ARTICLES[array_rand(self::ARTICLES, 1)];
-        $article['articleContent'] = $this->markdownParser->parse($articleContent);
+        $article['articleContent'] = $this->getArticleContent();
 
         return $article;
     }

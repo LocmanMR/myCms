@@ -49,5 +49,4 @@ services:
 
     App\Service\ArticleProvider:
         arguments:
-            - '@App\Service\MarkdownParser'
             - '@App\Service\ArticleContentProviderService'

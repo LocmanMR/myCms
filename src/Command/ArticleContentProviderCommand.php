@@ -12,6 +12,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ArticleContentProviderCommand
+ * @package App\Command
+ * @example php bin/console app:article:content_provider 5 --word=name --wordCount=10
+ */
 class ArticleContentProviderCommand extends Command
 {
     protected static $defaultName = 'app:article:content_provider';

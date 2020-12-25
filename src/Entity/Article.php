@@ -151,6 +151,18 @@ class Article
         return $this;
     }
 
+    public function setVote(): self
+    {
+        $this->voteCount++;
+        return $this;
+    }
+
+    public function pickUpVote(): self
+    {
+        $this->voteCount--;
+        return $this;
+    }
+
     public function getImageFilename(): ?string
     {
         return $this->imageFilename;
@@ -173,5 +185,18 @@ class Article
         $this->publishedAt = $publishedAt;
 
         return $this;
+    }
+
+    public function getImagePath(): string
+    {
+        return 'images/' . $this->getImageFilename();
+    }
+
+    public function getAuthorAvatarPath(): string
+    {
+        return sprintf(
+            'https://robohash.org/%s.png?set=set4',
+            str_replace(' ', '_', $this->getAuthor())
+        );
     }
 }

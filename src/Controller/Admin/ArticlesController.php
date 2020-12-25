@@ -35,10 +35,10 @@ libero. Lectus quam id leo in vitae turpis. In eu mi bibendum neque egestas cong
 quisque egestas diam. **Красная точка** blandit turpis cursus in hac habitasse platea dictumst quisque.
 EOF
             )
-            ->setAuthor('Барон Сосискин')
+            ->setAuthor('IRR')
             ->setKeywords('kitty')
             ->setVoteCount(random_int(0, 10))
-            ->setImageFilename('car1.jpg')
+            ->setImageFilename('article-1.jpeg')
         ;
 
         if (random_int(1, 10) > 4) {

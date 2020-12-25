@@ -27,8 +27,9 @@
                                         </div>
                                         <div class="mb-2 d-flex">
                                             <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 5</span>
-                                            <span class="badge badge-pill badge-secondary mr-2">Php 7.4</span>
-                                            <span class="badge badge-pill badge-secondary mr-2">Symfony</span>
+                                            {% for word in article.getKeyWordsSpan %}
+                                            <span class="badge badge-pill badge-secondary mr-2">{{ word }}</span>
+                                            {% endfor %}
                                         </div>
                                         <div class="mb-2 text-muted">
                                             <p>{{ article.description|cached_markdown }}</p>

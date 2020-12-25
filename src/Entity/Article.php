@@ -199,4 +199,9 @@ class Article
             str_replace(' ', '_', $this->getAuthor())
         );
     }
+
+    public function getKeyWordsSpan(): array
+    {
+        return explode(' ', $this->getKeywords());
+    }
 }

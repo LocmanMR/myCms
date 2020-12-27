@@ -12,22 +12,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleLikeController extends AbstractController
 {
     /**
-     * @Route("/articles/{slug}/like/{type<like|dislike>}", methods={"POST"}, name="app_article_like")
+     * @Route("/articles/{slug}/vote/up", methods={"POST"}, name="app_article_up")
      * @param Article $article
-     * @param $type
      * @param EntityManagerInterface $em
      * @return JsonResponse
      */
-    public function like(Article $article, $type, EntityManagerInterface $em): string
+    public function voteUp(Article $article, EntityManagerInterface $em): JsonResponse
     {
-        if ($type === 'like') {
-            $article->setVote();
-        } else {
-            $article->pickUpVote();
-        }
-        
+        $article->setVote();
         $em->flush();
-        
-        return $this->json(['likes' => $article->getVoteCount()]);
+
+        return $this->json(['voteCount' => $article->getVoteCount()]);
+    }
+
+    /**
+     * @Route("/articles/{slug}/vote/down", methods={"POST"}, name="app_article_down")
+     * @param Article $article
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    public function voteDown(Article $article, EntityManagerInterface $em): JsonResponse
+    {
+        $article->pickUpVote();
+        $em->flush();
+
+        return $this->json(['voteCount' => $article->getVoteCount()]);
     }
 }

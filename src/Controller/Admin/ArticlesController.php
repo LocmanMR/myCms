@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Service\ArticleProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,26 +16,18 @@ class ArticlesController extends AbstractController
     /**
      * @Route("/admin/articles/create", name="app_admin_articles_create")
      * @param EntityManagerInterface $em
+     * @param ArticleProvider $articleProvider
      * @return Response
      * @throws Exception
      */
-    public function create(EntityManagerInterface $em): Response
+    public function create(EntityManagerInterface $em, ArticleProvider $articleProvider): Response
     {
         $article = new Article();
         $article
             ->setTitle('Есть ли жизнь после девятой жизни?')
             ->setSlug('article-' . random_int(100, 999))
             ->setDescription('kitty story')
-            ->setBody(<<<EOF
-Lorem ipsum **красная точка** dolor sit amet, consectetur adipiscing elit, sed
-do eiusmod tempor incididunt [Сметанка](/) ut labore et dolore magna aliqua.
-Purus viverra accumsan in nisl. Diam vulputate ut pharetra sit amet aliquam. Faucibus a
-pellentesque sit amet porttitor eget dolor morbi non. Est ultricies integer quis auctor
-elit sed. Tristique nulla aliquet enim tortor at. Tristique et egestas quis ipsum. Consequat semper viverra nam
-libero. Lectus quam id leo in vitae turpis. In eu mi bibendum neque egestas congue
-quisque egestas diam. **Красная точка** blandit turpis cursus in hac habitasse platea dictumst quisque.
-EOF
-            )
+            ->setBody($articleProvider->getArticleContent())
             ->setAuthor('IRR')
             ->setKeywords('kitty')
             ->setVoteCount(random_int(0, 10))

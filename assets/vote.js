@@ -17,13 +17,13 @@ $(function () {
         const $voteCount = $container.find('[data-id=voteCount]');
 
         $voteCount.removeClass('text-success text-danger');
-        if (data.votes > 0) {
+        if (data.voteCount > 0) {
           $voteCount.addClass('text-success');
-        } else if(data.votes < 0) {
+        } else if(data.voteCount < 0) {
           $voteCount.addClass('text-danger');
         }
 
-        $voteCount.text(data.votes);
+        $voteCount.text(data.voteCount);
       });
     });
   });

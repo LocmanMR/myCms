@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -15,54 +16,54 @@ class Article
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private string $slug;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $slug;
+    private string $description;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="text")
      */
-    private $description;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $body;
+    private string $body;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $author;
+    private string $author;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $keywords;
+    private ?string $keywords;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $voteCount;
+    private ?string $voteCount;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $imageFilename;
+    private ?string $imageFilename;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $publishedAt;
+    private ?DateTimeInterface $publishedAt;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -91,31 +92,31 @@ class Article
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getBody(): ?string
+    public function getBody(): string
     {
         return $this->body;
     }
 
-    public function setBody(?string $body): self
+    public function setBody(string $body): self
     {
         $this->body = $body;
 
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -175,12 +176,12 @@ class Article
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeInterface
+    public function getPublishedAt(): ?DateTimeInterface
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?\DateTimeInterface $publishedAt): self
+    public function setPublishedAt(?DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 
@@ -198,10 +199,5 @@ class Article
             'https://robohash.org/%s.png?set=set4',
             str_replace(' ', '_', $this->getAuthor())
         );
-    }
-
-    public function getKeyWordsSpan(): array
-    {
-        return explode(' ', $this->getKeywords());
     }
 }

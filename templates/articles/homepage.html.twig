@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="mb-2 d-flex">
                                             <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 5</span>
-                                            {% for word in article.getKeyWordsSpan %}
+                                            {% for word in article.keywords|split(',') %}
                                             <span class="badge badge-pill badge-secondary mr-2">{{ word }}</span>
                                             {% endfor %}
                                         </div>

@@ -41,8 +41,6 @@ services:
             - '@App\Service\ArticleContentProviderService'
 
 #Services
-    App\Service\MarkdownParser: ~
-
     App\Service\ArticleContentProviderService:
         arguments:
             - '%WORDS_MARK%'

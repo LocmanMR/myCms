@@ -1,3 +1,7 @@
+@import "~bootstrap";
+@import "detail.css";
+@import "signin.css";
+
 html {
     position: relative;
     min-height: 100%;
@@ -59,3 +63,4 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+

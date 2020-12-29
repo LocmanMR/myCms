@@ -13,21 +13,26 @@
                             <div class="article-container mb-2">
                                 <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
                                     <div class="col-auto d-block">
-                                        <img class="article-img" src="{{ asset(article.image) }}">
+                                        <img class="article-img" src="{{ asset(article.imagePath) }}">
                                     </div>
                                     <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_detail', { slug: article.slug }) }}">
                                         <h5 class="mb-2">{{ article.title|capitalize }}</h5>
                                         <div class="d-flex mb-2">
-                                            <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="https://robohash.org/хэтээмэль_цеэсесович.png?set=set3"> IRR </div>
-                                            <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i> 3 дня назад</div>
+                                            <div class="text-muted align-self-center">
+                                                <img class="article-author-img rounded-circle" src="{{ article.authorAvatarPath }}"> {{ article.author }}
+                                            </div>
+                                            <div class="text-muted align-self-center ml-3">
+                                                <i class="fas fa-clock size-is-"></i> {{ article.publishedAt ? article.publishedAt|ago }}
+                                            </div>
                                         </div>
                                         <div class="mb-2 d-flex">
                                             <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i> 5</span>
-                                            <span class="badge badge-pill badge-secondary mr-2">Php 7.4</span>
-                                            <span class="badge badge-pill badge-secondary mr-2">Symfony</span>
+                                            {% for word in article.keywords|split(',') %}
+                                            <span class="badge badge-pill badge-secondary mr-2">{{ word }}</span>
+                                            {% endfor %}
                                         </div>
                                         <div class="mb-2 text-muted">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting  industry. Lorem Ipsu…</p>
+                                            <p>{{ article.description|cached_markdown }}</p>
                                         </div>
                                     </a>
                                 </div>

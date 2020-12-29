@@ -1,38 +1,47 @@
 {% extends 'base_content.html.twig' %}
 
-{% block title %}Статья: {{ article.title }}{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
-{% endblock %}
-
-{% block content_row_class %} {{ parent()}} no-gutters featured-border {% endblock %}
+{% block content_row_class %} {{ parent() }} no-gutters featured-border {% endblock %}
 {% block content_col_class %} article-detail {% endblock %}
 
 {% block content %}
+    <head>
+        <meta name="keywords" content="{{ article.keywords ? article.keywords }}" />
+        <title>{% block title %}Статья: {{ article.title }}{% endblock %}</title>
+    </head>
+
     <div class="col-sm-12 p-2">
         <div class="media d-flex align-content-center">
-            <img class="article-detail-image align-self-start mr-3 rounded" src="{{ asset(article.image) }}">
+            <img class="article-detail-image align-self-start mr-3 rounded" src="{{ asset(article.imagePath) }}">
             <div class="media-body d-inline-block align-self-center">
                 <h1 class="mb-2">{{ article.title|capitalize }}</h1>
                 <div class="d-flex mb-2">
                     <div class="text-muted align-self-center">
-                        <img class="article-author-img rounded-circle mr-2" src="https://robohash.org/флекс_абсолютович.jpg?set=set3">
-                        Флекс Абсолютович
+                        <img class="article-author-img rounded-circle mr-2" src="{{ article.authorAvatarPath }}">
+                        {{ article.author }}
                     </div>
-                    <div class="text-muted align-self-center ml-4"><i class="fas fa-clock size-is-"></i> 1 месяц назад</div>
+                    <div class="text-muted align-self-center ml-4"><i class="fas fa-clock size-is-"></i>
+                        {{ article.publishedAt ? article.publishedAt|ago }}
+                    </div>
                 </div>
                 <div class="mb-2 d-flex">
-                    <span class="badge badge-pill badge-secondary mr-2">Балбес</span>
-                    <span class="badge badge-pill badge-secondary mr-2">Криворучка</span>
-                    <span class="badge badge-pill badge-secondary mr-2">Рукопоп</span>
+                    {% for word in article.keywords|split(',') %}
+                    <span class="badge badge-pill badge-secondary mr-2">{{ word }}</span>
+                    {% endfor %}
                 </div>
                 <div class="mb-2">
-                    <div class="text-muted align-self-center article-detail-arrows">
-                        120
-                        <button class="btn btn-success ml-3"><i class="fas fa-arrow-up"></i></button>
-                        <button class="btn btn-danger"><i class="fas fa-arrow-down"></i></button>
+                    <div class="text-muted align-self-center article-detail-arrows"
+                         data-id="voteBlock">
+                        <span data-id="voteCount">{{ article.voteCount }}</span>
+                        <button data-id="voteButton"
+                                data-href="{{ path('app_article_vote', {slug: article.slug, type: 'up'}) }}"
+                                class="btn btn-success ml-3">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button data-id="voteButton"
+                                data-href="{{ path('app_article_vote', {slug: article.slug, type: 'down'}) }}"
+                                class="btn btn-danger">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -41,7 +50,7 @@
 
 
     <div class="col-12 mt-2 mb-4">
-        {{ article.articleContent|cached_markdown }}
+        {{ article.body|cached_markdown }}
     </div>
 
 

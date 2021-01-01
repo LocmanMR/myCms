@@ -12,6 +12,7 @@
         "doctrine/orm": "^2.8",
         "nesbot/carbon": "^2.42",
         "sensio/framework-extra-bundle": "^5.6",
+        "stof/doctrine-extensions-bundle": "^1.5",
         "symfony/asset": "5.1.*",
         "symfony/console": "5.1.*",
         "symfony/debug-bundle": "5.1.*",
@@ -31,6 +32,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "fzaninotto/faker": "^1.9",
         "symfony/maker-bundle": "^1.24"
     },
     "config": {

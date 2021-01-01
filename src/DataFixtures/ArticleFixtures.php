@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
+use App\Service\ArticleProvider;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
@@ -32,6 +33,13 @@ class ArticleFixtures extends BaseFixtures
         'article-3.jpg',
     ];
 
+    private ArticleProvider $articleProvider;
+
+    public function __construct(ArticleProvider $articleProvider)
+    {
+        $this->articleProvider = $articleProvider;
+    }
+
     /**
      * @param ObjectManager $manager
      * @throws Exception
@@ -42,11 +50,7 @@ class ArticleFixtures extends BaseFixtures
             $article
                 ->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setDescription('ISD')
-                ->setBody("Lorem ipsum **красная точка** dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt [Сметанка](/) ut labore et dolore magna aliqua.
-                    " . $this->faker->paragraphs($this->faker->numberBetween(2, 5), true)
-                );
-
+                ->setBody($this->articleProvider->getArticleContent());
 
             if ($this->faker->boolean(60)) {
                 $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));

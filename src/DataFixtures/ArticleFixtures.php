@@ -67,16 +67,29 @@ class ArticleFixtures extends BaseFixtures
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
 
-            for ($i = 0; $i < 3; $i++) {
-                $comment = (new Comment())
-                    ->setAuthorName($this->faker->randomElement(self::$articleAuthor))
-                    ->setContent($this->faker->paragraph)
-                    ->setArticle($article)
-                ;
-
-                $manager->persist($comment);
+            for ($i = 0; $i < $this->faker->numberBetween(2, 10); $i++) {
+                $this->addComment($article, $manager);
             }
         });
+    }
+
+    /**
+     * @param Article $article
+     * @param ObjectManager $manager
+     */
+    public function addComment(Article $article, ObjectManager $manager): void
+    {
+        $comment = (new Comment())
+            ->setAuthorName($this->faker->randomElement(self::$articleAuthor))
+            ->setContent($this->faker->paragraph)
+            ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
+            ->setArticle($article);
+
+        if ($this->faker->boolean) {
+            $comment->setDeletedAt($this->faker->dateTimeThisMonth);
+        }
+
+        $manager->persist($comment);
     }
 
 }

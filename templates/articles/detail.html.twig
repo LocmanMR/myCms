@@ -55,7 +55,7 @@
 
 
     <div class="col-sm-12 mb-4">
-        <h3><i class="pr-3 far fa-comment text-secondary"></i>{{ article.comments|length }} Комментария</h3>
+        <h3><i class="pr-3 far fa-comment text-secondary"></i>{{ article.notDeletedComments|length }} Комментария</h3>
         <hr>
 
         <div class="row mb-4">
@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        {% for comment in article.comments %}
+        {% for comment in article.notDeletedComments %}
             <div class="row mt-2">
                 <div class="col-sm-12">
                     <div class="media">

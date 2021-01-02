@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -71,7 +72,8 @@ class Article
     private ?DateTimeInterface $publishedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 
@@ -226,6 +228,14 @@ class Article
         return $this->comments;
     }
 
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getNotDeletedComments(): Collection
+    {
+        return $this->comments;
+    }
+
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -238,11 +248,9 @@ class Article
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getArticle() === $this) {
-                $comment->setArticle(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->comments->removeElement($comment) && $comment->getArticle() === $this) {
+            $comment->setArticle(null);
         }
 
         return $this;

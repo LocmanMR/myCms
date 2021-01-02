@@ -32,15 +32,8 @@ class BaseArticleController extends AbstractController
      */
     public function showBaseArticles(Article $article): Response
     {
-        /** @var array $comments Temporary variable */
-        $comments = [
-            'First comment',
-            'Second comment',
-        ];
-
         return $this->render('articles/detail.html.twig', [
             'article' => $article,
-            'comments' => $comments,
         ]);
     }
 }

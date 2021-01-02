@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Service\ArticleProvider;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -46,7 +47,7 @@ class ArticleFixtures extends BaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(Article::class, 10, function (Article $article) {
+        $this->createMany(Article::class, 10, function (Article $article) use ($manager) {
             $article
                 ->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setDescription('ISD')
@@ -65,6 +66,16 @@ class ArticleFixtures extends BaseFixtures
                 ->setVoteCount($this->faker->numberBetween(0, 10))
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
+
+            for ($i = 0; $i < 3; $i++) {
+                $comment = (new Comment())
+                    ->setAuthorName($this->faker->randomElement(self::$articleAuthor))
+                    ->setContent($this->faker->paragraph)
+                    ->setArticle($article)
+                ;
+
+                $manager->persist($comment);
+            }
         });
     }
 

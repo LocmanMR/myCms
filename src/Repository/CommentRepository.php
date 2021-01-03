@@ -14,37 +14,34 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    private const DOCTRINE_DELETABLE_FILTER = 'softdeletable';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
     }
 
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllWithSearch(?string $search, bool $withSoftDeleted = false)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        $qb = $this->createQueryBuilder('c');
+
+        if ($search) {
+            $qb
+                ->andWhere('c.content LIKE :search OR c.authorName LIKE :search OR a.title LIKE :search')
+                ->setParameter('search', "%$search%")
+            ;
+        }
+
+        if ($withSoftDeleted) {
+            $this->getEntityManager()->getFilters()->disable(self::DOCTRINE_DELETABLE_FILTER);
+        }
+
+        return $qb
+            ->innerJoin('c.article', 'a')
+            ->addSelect('a')
+            ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

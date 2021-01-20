@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,12 +17,14 @@ class BaseArticleController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      * @param ArticleRepository $articleRepository
+     * @param CommentRepository $commentRepository
      * @return Response
      */
-    public function showHomepage(ArticleRepository $articleRepository): Response
+    public function showHomepage(ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
     {
         return $this->render('articles/homepage.html.twig', [
             'articles' => $articleRepository->findLatestPublished(),
+            'latestComments' => $commentRepository->getLatestComments(),
         ]);
     }
 

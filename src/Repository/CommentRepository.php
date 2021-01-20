@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,7 +22,7 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function findAllWithSearch(?string $search, bool $withSoftDeleted = false)
+    public function findAllWithSearch(?string $search, bool $withSoftDeleted = false): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -43,5 +44,20 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function getLatestComments(int $commentsCount = 3): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->innerJoin('c.article', 'a')
+            ->andWhere('a.publishedAt IS NOT NULL')
+            ->andWhere('c.deletedAt IS NULL')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults($commentsCount)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

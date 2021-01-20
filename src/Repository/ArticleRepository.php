@@ -55,7 +55,10 @@ class ArticleRepository extends ServiceEntityRepository
 
     private function published(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder($qb)->andWhere('a.publishedAt IS NOT NULL');
+        return $this->getOrCreateQueryBuilder($qb)
+            ->innerJoin('a.comments', 'c')
+            ->andWhere('a.publishedAt IS NOT NULL')
+            ;
     }
 
     private function latest(QueryBuilder $qb = null): QueryBuilder

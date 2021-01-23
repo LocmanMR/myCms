@@ -22,7 +22,7 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function findAllWithSearch(?string $search, bool $withSoftDeleted = false): QueryBuilder
+    public function findAllWithSearch(?string $search, bool $withSoftDeleted = false): array
     {
         $qb = $this->createQueryBuilder('c');
 

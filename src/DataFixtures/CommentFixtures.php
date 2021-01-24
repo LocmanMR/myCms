@@ -33,7 +33,7 @@ class CommentFixtures extends BaseFixtures
                     ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
                     ->setArticle($article);
 
-                if (random_int(1,10) > 7) {
+                if (random_int(1,10) < 7) {
                     $comment->setContent($this->commentContentProvider->get('Also', 3));
                 } else {
                     $comment->setContent($this->commentContentProvider->get());

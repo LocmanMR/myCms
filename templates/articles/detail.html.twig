@@ -77,7 +77,7 @@
                             <b> {{ comment.authorName }} </b>
                             <small> {{ comment.createdAt|ago }} </small>
                             <br>
-                            <span class="comment"> {{ comment.content }} </span>
+                            <span class="comment"> {{ comment.content|cached_markdown }} </span>
                         </div>
                     </div>
                 </div>

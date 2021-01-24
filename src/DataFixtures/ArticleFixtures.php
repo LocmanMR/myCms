@@ -3,8 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
-use App\Entity\Comment;
-use App\Service\ArticleProvider;
+use App\Service\Interfaces\ArticleContentProviderInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
@@ -34,11 +33,11 @@ class ArticleFixtures extends BaseFixtures
         'article-3.jpg',
     ];
 
-    private ArticleProvider $articleProvider;
+    private ArticleContentProviderInterface $articleContentProvider;
 
-    public function __construct(ArticleProvider $articleProvider)
+    public function __construct(ArticleContentProviderInterface $articleContentProvider)
     {
-        $this->articleProvider = $articleProvider;
+        $this->articleContentProvider = $articleContentProvider;
     }
 
     /**
@@ -51,7 +50,7 @@ class ArticleFixtures extends BaseFixtures
             $article
                 ->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setDescription('ISD')
-                ->setBody($this->articleProvider->getArticleContent());
+                ->setBody($this->articleContentProvider->getContentWithProbability());
 
             if ($this->faker->boolean(60)) {
                 $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
@@ -66,31 +65,7 @@ class ArticleFixtures extends BaseFixtures
                 ->setVoteCount($this->faker->numberBetween(0, 10))
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
-
-            for ($i = 0; $i < $this->faker->numberBetween(2, 10); $i++) {
-                $this->addComment($article, $manager);
-            }
         });
     }
-
-    /**
-     * @param Article $article
-     * @param ObjectManager $manager
-     */
-    public function addComment(Article $article, ObjectManager $manager): void
-    {
-        $comment = (new Comment())
-            ->setAuthorName($this->faker->randomElement(self::$articleAuthor))
-            ->setContent($this->faker->paragraph)
-            ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
-            ->setArticle($article);
-
-        if ($this->faker->boolean) {
-            $comment->setDeletedAt($this->faker->dateTimeThisMonth);
-        }
-
-        $manager->persist($comment);
-    }
-
 }
 

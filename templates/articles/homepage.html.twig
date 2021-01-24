@@ -48,7 +48,7 @@
                             {% for comment in latestComments %}
                             <div class="border-bottom mb-3">
                                 <div class="h4 text-left"> {{ comment.getArticle.title }} </div>
-                                <p><i class="far fa-comment text-secondary"></i> {{ comment.content }}
+                                <p><i class="far fa-comment text-secondary"></i> {{ comment.content|cached_markdown }}
                                     <br> — <a href="#"> {{ comment.authorName }} </a></p>
                             </div>
                             {% endfor %}

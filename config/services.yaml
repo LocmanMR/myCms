@@ -41,10 +41,6 @@ services:
             - '@App\Service\ArticleContentProviderService'
 
 #Services
-    App\Service\ArticleContentProviderService:
+    App\Service\PastWordsService:
         arguments:
             - '%WORDS_MARK%'
-
-    App\Service\ArticleProvider:
-        arguments:
-            - '@App\Service\ArticleContentProviderService'

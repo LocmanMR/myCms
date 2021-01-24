@@ -14,6 +14,7 @@ class CommentsController extends AbstractController
     /**
      * @Route("/admin/comments", name="app_admin_comments")
      * @param Request $request
+     * @param CommentRepository $commentRepository
      * @return Response
      */
     public function index(Request $request, CommentRepository $commentRepository): Response

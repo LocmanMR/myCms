@@ -8,6 +8,7 @@ use App\Service\ArticleContentProviderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 class ContentProviderController extends AbstractController
 {
@@ -15,6 +16,7 @@ class ContentProviderController extends AbstractController
      * @param Request $request
      * @param ArticleContentProviderService $articleContentProvider
      * @return Response
+     * @throws Exception
      */
     public function articleContent(Request $request, ArticleContentProviderService $articleContentProvider): Response
     {

@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-
 use Exception;
 
 class PastWordsService
 {
-    private string $wordsMark;
+    private MarkWordsService $markWordsService;
 
-    public function __construct(string $wordsMark)
+    public function __construct(MarkWordsService $markWordsService)
     {
-        $this->wordsMark = $wordsMark;
+        $this->markWordsService = $markWordsService;
     }
 
     /**
@@ -29,25 +28,12 @@ class PastWordsService
         for ($count = 0; $count < $wordsCount; $count++) {
             $position = random_int(0, $wordsInContext);
             if (array_key_exists($position, $explodeContent)) {
-                $explodeContent[$position] .= ' ' . $this->markWords($word);
+                $explodeContent[$position] .= ' ' . $this->markWordsService->markWords($word);
             } else {
-                $explodeContent[$position - 1] .= ' ' . $this->markWords($word);
+                $explodeContent[$position - 1] .= ' ' . $this->markWordsService->markWords($word);
             }
         }
 
         return implode(' ', $explodeContent);
-    }
-
-    private function markWords(string $word): string
-    {
-        if ($this->wordsMark === 'bold') {
-            return '**' . $word . '**';
-        }
-
-        if ($this->wordsMark === 'italics') {
-            return '*' . $word . '*';
-        }
-
-        return $word;
     }
 }

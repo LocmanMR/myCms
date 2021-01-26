@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-
-use App\Enum\ContentProviderWordsEnum;
-use App\Exceptions\ProbabilityException;
-use App\Helpers\ProbabilityHelper;
 use App\Service\Interfaces\CommentContentProviderInterface;
 use Exception;
 

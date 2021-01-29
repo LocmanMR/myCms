@@ -6,6 +6,7 @@ namespace App\Helpers;
 
 
 use App\Exceptions\ProbabilityException;
+use Exception;
 
 class ProbabilityHelper
 {
@@ -15,6 +16,7 @@ class ProbabilityHelper
      * @param string $column
      * @return int
      * @throws ProbabilityException
+     * @throws Exception
      */
     public static function getRandomIndex(array $data, string $column = 'probability'): int
     {

@@ -1,11 +1,14 @@
 <?php
 declare(strict_types=1);
 
-
 namespace App\Service;
 
-
+use App\Enum\ContentProviderWordsEnum;
+use App\Exceptions\ProbabilityException;
+use App\Helpers\ProbabilityHelper;
 use App\Service\Interfaces\ArticleContentProviderInterface;
+use Psr\Log\LoggerInterface;
+use Exception;
 
 class ArticleContentProviderService implements ArticleContentProviderInterface
 {
@@ -17,13 +20,50 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         'Tristique et egestas quis ipsum. Consequat semper viverra nam.',
     ];
 
-    private string $wordsMark;
+    private PasteWordsService $pasteWordsService;
+    private LoggerInterface $logger;
 
-    public function __construct(string $wordsMark)
+    public function __construct(PasteWordsService $pasteWordsService, LoggerInterface $logger)
     {
-        $this->wordsMark = $wordsMark;
+        $this->pasteWordsService = $pasteWordsService;
+        $this->logger = $logger;
     }
 
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getContentWithProbability(): string
+    {
+        try {
+            $randomIndex = ProbabilityHelper::getRandomIndex(ContentProviderWordsEnum::CONTENT_WORDS);
+            $articleContent = $this->get(
+                ContentProviderWordsEnum::CONTENT_WORDS[$randomIndex]['paragraphCount'],
+                ContentProviderWordsEnum::CONTENT_WORDS[$randomIndex]['word'],
+                ContentProviderWordsEnum::CONTENT_WORDS[$randomIndex]['wordCount']
+            );
+        } catch (ProbabilityException $e) {
+            $this->logger->warning(
+                'Probability helper failed',
+                [
+                    'Exception' => $e->getExceptionClass(),
+                    'Message' => $e->getMessage(),
+                    'Trace' => $e->getTrace(),
+                ]
+            );
+            $articleContent = $this->get(0);
+        }
+
+        return $articleContent;
+    }
+
+    /**
+     * @param int $paragraphs
+     * @param string|null $word
+     * @param int $wordsCount
+     * @return string
+     * @throws Exception
+     */
     public function get(int $paragraphs, string $word = null, int $wordsCount = 0): string
     {
         if ($paragraphs === 0) {
@@ -37,39 +77,10 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         $content = implode(' ', $content);
 
         if (!empty($word) && $wordsCount > 0) {
-            $content = $this->setWordsToContent($content, $word, $wordsCount);
+            $content = $this->pasteWordsService->paste($content, $word, $wordsCount);
         }
 
         return $content;
-    }
-
-    private function setWordsToContent(string $content, string $word, int $wordsCount): string
-    {
-        $explodeContent = explode(' ', $content);
-        $wordsInContext = count($explodeContent);
-        for ($count = 0; $count < $wordsCount; $count++) {
-            $position = random_int(0, $wordsInContext);
-            if (array_key_exists($position, $explodeContent)) {
-                $explodeContent[$position] .= ' ' . $this->markWords($word);
-            } else {
-                $explodeContent[$position - 1] .= ' ' . $this->markWords($word);
-            }
-        }
-
-        return implode(' ', $explodeContent);
-    }
-
-    private function markWords(string $word): string
-    {
-        if ($this->wordsMark === 'bold') {
-            return '**' . $word . '**';
-        }
-
-        if ($this->wordsMark === 'italics') {
-            return '*' . $word . '*';
-        }
-
-        return $word;
     }
 
 }

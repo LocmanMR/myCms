@@ -41,6 +41,6 @@ services:
             - '@App\Service\ArticleContentProviderService'
 
 #Services
-    App\Service\MarkWordsService:
+    App\Service\PasteWordsService:
         arguments:
             - '%WORDS_MARK%'

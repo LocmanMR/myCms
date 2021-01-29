@@ -16,11 +16,11 @@ class CommentContentProviderService implements CommentContentProviderInterface
         'Comment 5. Perfect.',
     ];
 
-    private PastWordsService $pastWordsService;
+    private PasteWordsService $pasteWordsService;
 
-    public function __construct(PastWordsService $pastWordsService)
+    public function __construct(PasteWordsService $pasteWordsService)
     {
-        $this->pastWordsService = $pastWordsService;
+        $this->pasteWordsService = $pasteWordsService;
     }
 
     /**
@@ -34,7 +34,7 @@ class CommentContentProviderService implements CommentContentProviderInterface
         $comment = self::COMMENT_PARAGRAPHS[array_rand(self::COMMENT_PARAGRAPHS, 1)];
 
         if (!empty($word) && $wordsCount > 0) {
-            $comment = $this->pastWordsService->paste($comment, $word, $wordsCount);
+            $comment = $this->pasteWordsService->paste($comment, $word, $wordsCount);
         }
 
         return $comment;

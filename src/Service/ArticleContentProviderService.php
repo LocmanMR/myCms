@@ -20,12 +20,12 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         'Tristique et egestas quis ipsum. Consequat semper viverra nam.',
     ];
 
-    private PastWordsService $pastWordsService;
+    private PasteWordsService $pasteWordsService;
     private LoggerInterface $logger;
 
-    public function __construct(PastWordsService $pastWordsService, LoggerInterface $logger)
+    public function __construct(PasteWordsService $pasteWordsService, LoggerInterface $logger)
     {
-        $this->pastWordsService = $pastWordsService;
+        $this->pasteWordsService = $pasteWordsService;
         $this->logger = $logger;
     }
 
@@ -77,7 +77,7 @@ class ArticleContentProviderService implements ArticleContentProviderInterface
         $content = implode(' ', $content);
 
         if (!empty($word) && $wordsCount > 0) {
-            $content = $this->pastWordsService->paste($content, $word, $wordsCount);
+            $content = $this->pasteWordsService->paste($content, $word, $wordsCount);
         }
 
         return $content;

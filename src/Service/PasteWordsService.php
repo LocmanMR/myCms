@@ -5,13 +5,13 @@ namespace App\Service;
 
 use Exception;
 
-class PastWordsService
+class PasteWordsService
 {
-    private MarkWordsService $markWordsService;
+    private string $wordMark;
 
-    public function __construct(MarkWordsService $markWordsService)
+    public function __construct(string $wordMark)
     {
-        $this->markWordsService = $markWordsService;
+        $this->wordMark = $wordMark;
     }
 
     /**
@@ -28,12 +28,25 @@ class PastWordsService
         for ($count = 0; $count < $wordsCount; $count++) {
             $position = random_int(0, $wordsInContext);
             if (array_key_exists($position, $explodeContent)) {
-                $explodeContent[$position] .= ' ' . $this->markWordsService->markWords($word);
+                $explodeContent[$position] .= ' ' . $this->markWords($word);
             } else {
-                $explodeContent[$position - 1] .= ' ' . $this->markWordsService->markWords($word);
+                $explodeContent[$position - 1] .= ' ' . $this->markWords($word);
             }
         }
 
         return implode(' ', $explodeContent);
+    }
+
+    private function markWords(string $word): string
+    {
+        if ($this->wordMark === 'bold') {
+            return '**' . $word . '**';
+        }
+
+        if ($this->wordMark === 'italics') {
+            return '*' . $word . '*';
+        }
+
+        return $word;
     }
 }

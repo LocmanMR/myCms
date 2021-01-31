@@ -50,6 +50,7 @@ class CommentRepository extends ServiceEntityRepository
 
         return $qb
             ->innerJoin('c.article', 'a')
+            ->addSelect('a')
             ->andWhere('a.publishedAt IS NOT NULL')
             ->andWhere('c.deletedAt IS NULL')
             ->orderBy('c.createdAt', 'DESC')

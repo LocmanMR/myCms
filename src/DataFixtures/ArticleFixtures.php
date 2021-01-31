@@ -3,12 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Service\Interfaces\ArticleContentProviderInterface;
 use App\Service\Interfaces\CommentContentProviderInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
-class ArticleFixtures extends BaseFixtures
+class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
 {
     private static array $articleTitles = [
         'Airflow vs Cron?',
@@ -70,7 +72,25 @@ class ArticleFixtures extends BaseFixtures
                 ->setVoteCount($this->faker->numberBetween(0, 10))
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
+
+            /** @var Tag[] $tags */
+            $tags = [];
+            for ($i = 0; $i < $this->faker->numberBetween(0, 5); $i++) {
+                $tags[] = $this->getRandomReference(Tag::class);
+            }
+
+            foreach ($tags as $tag) {
+                $article->addTag($tag);
+            }
         });
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            TagFixtures::class
+        ];
+    }
+
 }
 

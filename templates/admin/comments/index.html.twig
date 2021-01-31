@@ -3,7 +3,7 @@
 {% block title %}Управление Комментариями{% endblock %}
 
 {% block content %}
-    <h1>Управление комментариями</h1>
+    <h1>Управление комментариями ({{ pagination.totalItemCount }})</h1>
 
     <form>
         <div class="input-group mb-3">
@@ -41,7 +41,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for comment in comments %}
+        {% for comment in pagination %}
             <tr>
                 <td>
                     <a href=" {{ path('app_detail', { slug: comment.article.slug }) }} ">
@@ -59,4 +59,5 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ knp_pagination_render(pagination) }}
 {% endblock %}

@@ -53,7 +53,7 @@ class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(Article::class, 10, function (Article $article) use ($manager) {
+        $this->createMany(Article::class, 10, function (Article $article) {
             $article
                 ->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setDescription('ISD')

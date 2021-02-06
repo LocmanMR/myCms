@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
+use App\Enum\Dictionary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,25 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
-    // /**
-    //  * @return Tag[] Returns an array of Tag objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllWithSearchQuery(?string $search, bool $withSoftDeleted = false): QueryBuilder
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('t');
 
-    /*
-    public function findOneBySomeField($value): ?Tag
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($search) {
+            $qb
+                ->andWhere('t.name LIKE :search')
+                ->setParameter('search', "%$search%")
+            ;
+        }
+
+        if ($withSoftDeleted) {
+            $this->getEntityManager()->getFilters()->disable(Dictionary::DOCTRINE_DELETABLE_FILTER);
+        }
+
+        return $qb
+            ->innerJoin('t.articles', 'a')
+            ->addSelect('a')
+            ->orderBy('t.createdAt', 'DESC')
+            ;
     }
-    */
 }

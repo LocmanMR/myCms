@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Enum\Dictionary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,8 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    private const DOCTRINE_DELETABLE_FILTER = 'softdeletable';
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -34,7 +33,7 @@ class CommentRepository extends ServiceEntityRepository
         }
 
         if ($withSoftDeleted) {
-            $this->getEntityManager()->getFilters()->disable(self::DOCTRINE_DELETABLE_FILTER);
+            $this->getEntityManager()->getFilters()->disable(Dictionary::DOCTRINE_DELETABLE_FILTER);
         }
 
         return $qb

@@ -5,31 +5,7 @@
 {% block content %}
     <h1>Управление комментариями ({{ pagination.totalItemCount }})</h1>
 
-    <form>
-        <div class="input-group mb-3">
-            <input type="text"
-                   name="q"
-                   class="form-control"
-                   placeholder="Найти..."
-                   value="{{ app.request.query.get('q') }}"
-            >
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="form-check">
-                <input type="checkbox"
-                       name="showDeleted"
-                       class="form-check-input"
-                       {% if app.request.query.has('showDeleted') %} checked {% endif %}
-                >
-                <label class="form-check-label"> Show deleted comments </label>
-            </div>
-        </div>
-    </form>
-
+    {% include 'partial/admin_search_panel.html.twig' %}
 
     <table class="table table-striped">
         <thead>

@@ -10,6 +10,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class CommentFixtures extends BaseFixtures implements DependentFixtureInterface
 {
+    private const COMMENT_WORDS = [
+        'Also',
+        'Head',
+        'Strange',
+        'Golang',
+    ];
+
     /**
      * @var CommentContentProviderInterface
      */
@@ -28,11 +35,14 @@ class CommentFixtures extends BaseFixtures implements DependentFixtureInterface
                 ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
                 ->setArticle($this->getRandomReference(Article::class));
 
-            if (random_int(1,10) <= 7) {
-                $comment->setContent($this->commentContentProvider->get('Also', 3));
-            } else {
-                $comment->setContent($this->commentContentProvider->get());
+            $content = $this->commentContentProvider->get();
+            if (random_int(1, 10) <= 7) {
+                $content = $this->commentContentProvider->get(
+                    self::COMMENT_WORDS[array_rand(self::COMMENT_WORDS, 1)],
+                    $this->faker->numberBetween(0, 5)
+                );
             }
+            $comment->setContent($content);
 
             if ($this->faker->boolean) {
                 $comment->setDeletedAt($this->faker->dateTimeThisMonth);

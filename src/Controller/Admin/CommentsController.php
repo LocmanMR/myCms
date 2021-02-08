@@ -29,7 +29,7 @@ class CommentsController extends AbstractController
         $pagination = $paginator->paginate(
             $commentsQuery,
             $request->query->getInt('page', 1),
-            20
+            (int)$request->query->get('count') ?: 20
         );
 
         return $this->render('admin/comments/index.html.twig', [

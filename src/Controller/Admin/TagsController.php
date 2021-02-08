@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +29,7 @@ class TagsController extends AbstractController
         $pagination = $paginator->paginate(
             $tagsQuery,
             $request->query->getInt('page', 1),
-            20
+            (int)$request->query->get('count') ?: 20
         );
 
         return $this->render('admin/tags/index.html.twig', [

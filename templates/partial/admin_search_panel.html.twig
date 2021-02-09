@@ -21,14 +21,20 @@
             <label class="form-check-label"> Show deleted tags </label>
         </div>
         <div class="input-group mb-3">
+            {% set values = {'Show 10 items': 10, 'Show 20 items': 20, 'Show 50 items': 50} %}
             <select name="count"
                     class="custom-select"
 
             >
-                <option value="20">Количество записей</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
+                {% if app.request.query.get('count') %}
+                    <option selected value="{{ app.request.query.get('count') }}"> {{ 'Show ' ~ app.request.query.get('count') ~ ' items' }} </option>
+                {% else %}
+                    <option selected value="20">Show 20 items</option>
+                {% endif %}
+
+                {% for key, value in values %}
+                    <option value="{{ value }}"> {{ key }} </option>
+                {% endfor %}
             </select>
         </div>
     </div>

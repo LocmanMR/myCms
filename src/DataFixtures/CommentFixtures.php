@@ -35,14 +35,13 @@ class CommentFixtures extends BaseFixtures implements DependentFixtureInterface
                 ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
                 ->setArticle($this->getRandomReference(Article::class));
 
-            $content = $this->commentContentProvider->get();
+            $contentWord = null;
+            $wordCount = 0;
             if (random_int(1, 10) <= 7) {
-                $content = $this->commentContentProvider->get(
-                    self::COMMENT_WORDS[array_rand(self::COMMENT_WORDS, 1)],
-                    $this->faker->numberBetween(0, 5)
-                );
+                $contentWord = self::COMMENT_WORDS[array_rand(self::COMMENT_WORDS, 1)];
+                $wordCount = $this->faker->numberBetween(1, 5);
             }
-            $comment->setContent($content);
+            $comment->setContent($this->commentContentProvider->get($contentWord, $wordCount));
 
             if ($this->faker->boolean) {
                 $comment->setDeletedAt($this->faker->dateTimeThisMonth);

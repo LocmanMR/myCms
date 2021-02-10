@@ -1,0 +1,43 @@
+{% extends 'base_content.html.twig' %}
+
+{% block title %}Управление тегами{% endblock %}
+
+{% block content %}
+    <h1>Управление тегами({{ pagination.totalItemCount }})</h1>
+
+    {% include 'partial/admin_search_panel.html.twig' %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Статьи</th>
+            <th>Тег</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tag in pagination %}
+            <tr>
+                <td>
+                    {% for article in tag.articles %}
+                    <a href=" {{ path('app_detail', { slug: article.slug }) }} ">
+                        {% if loop.last %}
+                            {{ article.title }}
+                        {% else %}
+                            {{ article.title }} |
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </td>
+                <td style="width: 20%;">{{ tag.name|u.truncate(40, '...') }}</td>
+                <td>{{ tag.createdAt|ago }} {% if tag.deletedAt %} DELETED {% endif %} </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет тегов</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

@@ -1,0 +1,41 @@
+<form>
+    <div class="input-group mb-3">
+        <input type="text"
+               name="q"
+               class="form-control"
+               placeholder="Найти..."
+               value="{{ app.request.query.get('q')}}"
+        >
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="form-check">
+            <input type="checkbox"
+                   name="showDeleted"
+                   class="form-check-input"
+                    {% if app.request.query.has('showDeleted') %} checked {% endif %}
+            >
+            <label class="form-check-label"> Show deleted tags </label>
+        </div>
+        <div class="input-group mb-3">
+            {% set values = {'Show 10 items': 10, 'Show 20 items': 20, 'Show 50 items': 50} %}
+            <select name="count"
+                    class="custom-select"
+
+            >
+                {% if app.request.query.get('count') %}
+                    <option selected value="{{ app.request.query.get('count') }}"> {{ 'Show ' ~ app.request.query.get('count') ~ ' items' }} </option>
+                {% else %}
+                    <option selected value="20">Show 20 items</option>
+                {% endif %}
+
+                {% for key, value in values %}
+                    <option value="{{ value }}"> {{ key }} </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</form>

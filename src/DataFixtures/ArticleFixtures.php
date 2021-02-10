@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
-use App\Entity\Comment;
+use App\Entity\Tag;
 use App\Service\Interfaces\ArticleContentProviderInterface;
 use App\Service\Interfaces\CommentContentProviderInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
-class ArticleFixtures extends BaseFixtures
+class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
 {
     private static array $articleTitles = [
         'Airflow vs Cron?',
@@ -52,7 +53,7 @@ class ArticleFixtures extends BaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(Article::class, 10, function (Article $article) use ($manager) {
+        $this->createMany(Article::class, 10, function (Article $article) {
             $article
                 ->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setDescription('ISD')
@@ -72,35 +73,24 @@ class ArticleFixtures extends BaseFixtures
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
 
-            for ($i = 0; $i < $this->faker->numberBetween(2, 10); $i++) {
-                $this->addComment($article, $manager);
+            /** @var Tag[] $tags */
+            $tags = [];
+            for ($i = 0; $i < $this->faker->numberBetween(0, 5); $i++) {
+                $tags[] = $this->getRandomReference(Tag::class);
+            }
+
+            foreach ($tags as $tag) {
+                $article->addTag($tag);
             }
         });
     }
 
-    /**
-     * @param Article $article
-     * @param ObjectManager $manager
-     * @throws Exception
-     */
-    public function addComment(Article $article, ObjectManager $manager): void
+    public function getDependencies(): array
     {
-        $comment = (new Comment())
-            ->setAuthorName($this->faker->randomElement(self::$articleAuthor))
-            ->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 day'))
-            ->setArticle($article);
-
-        if (random_int(1,10) <= 7) {
-            $comment->setContent($this->commentContentProvider->get('Also', 3));
-        } else {
-            $comment->setContent($this->commentContentProvider->get());
-        }
-
-        if ($this->faker->boolean) {
-            $comment->setDeletedAt($this->faker->dateTimeThisMonth);
-        }
-
-        $manager->persist($comment);
+        return [
+            TagFixtures::class
+        ];
     }
+
 }
 

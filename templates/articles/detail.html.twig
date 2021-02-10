@@ -23,11 +23,7 @@
                         {{ article.publishedAt ? article.publishedAt|ago }}
                     </div>
                 </div>
-                <div class="mb-2 d-flex">
-                    {% for word in article.keywords|split(',') %}
-                    <span class="badge badge-pill badge-secondary mr-2">{{ word }}</span>
-                    {% endfor %}
-                </div>
+                {% include 'partial/article_tags.html.twig' with { tags: article.tags } %}
                 <div class="mb-2">
                     <div class="text-muted align-self-center article-detail-arrows"
                          data-id="voteBlock">

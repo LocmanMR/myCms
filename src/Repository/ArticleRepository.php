@@ -26,6 +26,10 @@ class ArticleRepository extends ServiceEntityRepository
     public function findLatestPublished(): array
     {
         return $this->published($this->latest())
+            ->leftJoin('a.comments', 'c')
+            ->addSelect('c')
+            ->leftJoin('a.tags', 't')
+            ->addSelect('t')
             ->getQuery()
             ->getResult()
             ;
@@ -56,7 +60,6 @@ class ArticleRepository extends ServiceEntityRepository
     private function published(QueryBuilder $qb = null): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder($qb)
-            ->leftJoin('a.comments', 'c')
             ->andWhere('a.publishedAt IS NOT NULL')
             ;
     }

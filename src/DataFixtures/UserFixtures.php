@@ -28,7 +28,7 @@ class UserFixtures extends BaseFixtures
             ;
 
             $isActive = 1;
-            if (random_int(1, 10) <= 7) {
+            if (random_int(1, 10) <= 3) {
                 $isActive = 0;
             }
             $user->setIsActive($isActive);

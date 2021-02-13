@@ -88,7 +88,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         if (!$user->getIsActive()) {
-            throw new CustomUserMessageAuthenticationException('Уходи, бабайка!');
+            throw new CustomUserMessageAuthenticationException('User is inactive');
         }
 
         return $user;

@@ -26,22 +26,27 @@
                 </li>
             </ul>
             <ul class="navbar-nav my-2 my-lg-0">
+                {% if is_granted('ROLE_USER') %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="nav-profile-img rounded-circle" src="{{ asset('images/profile.png') }}">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/profile.html">Профиль</a>
-                        <a class="dropdown-item" href="/create.html">Создать статью</a>
+                        <a class="dropdown-item" href="{{ path('app_account') }}">Профиль</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a class="dropdown-item" href="{{ path('app_admin_articles_create') }}">Создать статью</a>
                         <a class="dropdown-item" href="/admin.html">Админ</a>
+                        {% endif %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Выйти</a>
                     </div>
                 </li>
+                {% else %}
                 <li class="nav-item d-flex my-auto">
                     <a class="btn btn-outline-light my-2 my-sm-0 mr-2" href="{{ path('app_login') }}">Войти</a>
                     <a class="btn btn-outline-light my-2 my-sm-0" href="/register.html">Регистрация</a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -23,6 +23,7 @@ class ArticleContentProviderCommand extends Command
 
     private ArticleContentProviderInterface $articleContentProvider;
 
+    // TODO: need create AbstractBaseCommands
     public function __construct(ArticleContentProviderInterface $articleContentProvider, string $name = null)
     {
         $this->articleContentProvider = $articleContentProvider;

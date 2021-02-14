@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Article;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;

@@ -19,8 +19,11 @@ class CommentsController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, CommentRepository $commentRepository, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        Request $request,
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator
+    ): Response {
         $commentsQuery = $commentRepository->findAllWithSearchQuery(
             $request->query->get('q'),
             $request->query->has('showDeleted'),

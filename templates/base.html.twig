@@ -40,7 +40,9 @@
                         <a class="dropdown-item" href="{{ path('app_account') }}">Профиль</a>
                         {% if is_granted('ROLE_ADMIN') %}
                         <a class="dropdown-item" href="{{ path('app_admin_articles_create') }}">Создать статью</a>
-                        <a class="dropdown-item" href="/admin.html">Админ</a>
+                        {% endif %}
+                        {% if (is_granted('ROLE_ADMIN_COMMENT')) or (is_granted('ROLE_ADMIN_TAG')) %}
+                        <a class="dropdown-item" href="{{ path('app_admin') }}">Админ</a>
                         {% endif %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Выйти</a>

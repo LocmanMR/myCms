@@ -11,6 +11,8 @@ class ArticlesController extends AbstractController
 {
     /**
      * @Route("/admin/articles/create", name="app_admin_articles_create")
+     * @param EntityManagerInterface $em
+     * @return Response
      */
     public function index(EntityManagerInterface $em): Response
     {

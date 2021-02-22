@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\DataFixtures;
 
@@ -27,6 +28,16 @@ class UserFixtures extends BaseFixtures
                 ->setPassword($this->passwordEncoder->encodePassword($user, '123456'))
                 ->setIsActive(true)
                 ->setRoles(['ROLE_ADMIN'])
+            ;
+        });
+
+        $this->create(User::class, function (User $user) {
+            $user
+                ->setEmail('api@symfony.ru')
+                ->setFirstName('Api')
+                ->setPassword($this->passwordEncoder->encodePassword($user, '123456'))
+                ->setIsActive(true)
+                ->setRoles(['ROLE_API'])
             ;
         });
 

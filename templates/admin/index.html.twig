@@ -1,32 +1,33 @@
-{% extends 'base_content.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Личный кабинет{% endblock %}
-{% block content_row_class %}{% endblock %}
+{% block title %}Панель админа{% endblock %}
 
-{% block content %}
-    <div class="card border rounded-lg mb-4 shadow-sm bg-white">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-sm-2">
-                    <img src="{{ app.user.avatarUrl }}" style="width: 100%">
-                </div>
-                <div class="col-sm-10">
-                    <div class="d-flex justify-content-between" style="height: 100%;">
-                        <h3 class="align-self-center mb-0">Привет, {{ app.user.firstName }}</h3>
+{% block body %}
+    <div class="container">
+        <div class="card border rounded-lg mb-4 shadow-sm bg-white">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="{{ app.user.avatarUrl }}" style="width: 100%">
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="d-flex justify-content-between" style="height: 100%;">
+                            <h3 class="align-self-center mb-0">Привет, {{ app.user.firstName }}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <ul>
+                {% if is_granted('ROLE_ADMIN_COMMENT') %}
+                    <li><a href="{{ path('app_admin_comments') }}"> Управление комментариями </a></li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN_TAG') %}
+                    <li><a href="{{ path('app_admin_tags') }}"> Управление тегами </a></li>
+                {% endif %}
+            </ul>
+
         </div>
-
-        <ul>
-            {% if is_granted('ROLE_ADMIN_COMMENT') %}
-            <li><a href="{{ path('app_admin_comments') }}"> Управление комментариями </a></li>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN_TAG') %}
-            <li><a href="{{ path('app_admin_tags') }}"> Управление тегами </a></li>
-            {% endif %}
-        </ul>
-
     </div>
 
 {% endblock %}

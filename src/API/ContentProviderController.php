@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\ArticleContentProviderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
@@ -33,7 +34,9 @@ class ContentProviderController extends AbstractController
      */
     public function articleContent(Request $request, ArticleContentProviderService $articleContentProvider): Response
     {
-        $this->checkUserRole();
+        if (!$this->checkUserRole()) {
+            return new JsonResponse(['message' => 'Access denied'], 403);
+        }
 
         $paragraphs = $request->query->get('paragraphs');
         $word = $request->query->get('word');
@@ -44,15 +47,19 @@ class ContentProviderController extends AbstractController
         return $this->json(['text' => $articleContent]);
     }
 
-    private function checkUserRole(): void
+    private function checkUserRole(): bool
     {
         $user = $this->getUser();
 
-        if (!in_array(UserRoles::USER_ROLE_API, $user->getRoles(), true)) {
+        if (!$this->isGranted(UserRoles::USER_ROLE_API, $user)) {
             $this->apiLoggerLogger->warning('User is trying to access', [
                 'User' => $user->getUsername(),
                 'Roles' => $user->getRoles(),
             ]);
+
+            return false;
         }
+
+        return true;
     }
 }

@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Tag;
 use App\Service\Interfaces\ArticleContentProviderInterface;
-use App\Service\Interfaces\CommentContentProviderInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -37,14 +37,10 @@ class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
     ];
 
     private ArticleContentProviderInterface $articleContentProvider;
-    private CommentContentProviderInterface $commentContentProvider;
 
-    public function __construct(
-        ArticleContentProviderInterface $articleContentProvider,
-        CommentContentProviderInterface $commentContentProvider
-    ) {
+    public function __construct(ArticleContentProviderInterface $articleContentProvider)
+    {
         $this->articleContentProvider = $articleContentProvider;
-        $this->commentContentProvider = $commentContentProvider;
     }
 
     /**

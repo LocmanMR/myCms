@@ -1,0 +1,4 @@
+### Authorization by token, part 2. Use token to authorize.
+GET https://127.0.0.1:8000/api/user
+Accept: application/json
+Authorization: Bearer 7d7876d3cbf38975ee36f1a8bdf6af4ee09bfa9c

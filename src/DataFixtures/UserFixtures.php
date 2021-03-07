@@ -43,7 +43,9 @@ class UserFixtures extends BaseFixtures
                 ->setRoles(['ROLE_API'])
             ;
 
-            $manager->persist(new ApiToken($user));
+            for ($i = 0; $i < 3; $i++) {
+                $manager->persist(new ApiToken($user));
+            }
         });
 
         $this->createMany(User::class, 10, function (User $user) use ($manager) {

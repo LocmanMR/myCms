@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Repository\ApiTokenRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -15,15 +16,24 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
-
     /**
      * @var ApiTokenRepository
      */
     private ApiTokenRepository $apiTokenRepository;
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $apiLoggerLogger;
 
-    public function __construct(ApiTokenRepository $apiTokenRepository)
+    /**
+     * ApiTokenAuthenticator constructor.
+     * @param ApiTokenRepository $apiTokenRepository
+     * @param LoggerInterface $apiLoggerLogger
+     */
+    public function __construct(ApiTokenRepository $apiTokenRepository, LoggerInterface $apiLoggerLogger)
     {
         $this->apiTokenRepository = $apiTokenRepository;
+        $this->apiLoggerLogger = $apiLoggerLogger;
     }
 
     public function supports(Request $request): bool
@@ -71,9 +81,17 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         ], 401);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): void
     {
-        // Continue
+        $routeName = $request->attributes->get('_route');
+        $fullUrl = $request->getSchemeAndHttpHost() . $request->getPathInfo();
+
+        $this->apiLoggerLogger->info('User logged in', [
+            'route' => $routeName,
+            'url' => $fullUrl,
+            'token' => $this->getCredentials($request),
+            'user' => $token->getUser()->getUsername(),
+        ]);
     }
 
     public function start(Request $request, AuthenticationException $authException = null)

@@ -46,7 +46,10 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request): string
     {
-        return substr($request->headers->get('Authorization'), 7);
+        $token = substr($request->headers->get('Authorization'), 7);
+        $request->attributes->set('bearerToken', $token);
+
+        return $token;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -89,7 +92,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         $this->apiLoggerLogger->info('User logged in', [
             'route' => $routeName,
             'url' => $fullUrl,
-            'token' => $this->getCredentials($request),
+            'token' => $request->attributes->get('bearerToken'),
             'user' => $token->getUser()->getUsername(),
         ]);
     }

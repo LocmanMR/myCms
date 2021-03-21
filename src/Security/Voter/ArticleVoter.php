@@ -20,13 +20,13 @@ class ArticleVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
-        return in_array($attribute, ['MANAGE'])
+        return in_array($attribute, ['MANAGE', 'API'])
             && $subject instanceof Article;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         /** @var Article $subject */
 
@@ -43,6 +43,16 @@ class ArticleVoter extends Voter
                 }
 
                 if ($this->security->isGranted("ROLE_ADMIN_ARTICLE")) {
+                    return true;
+                }
+
+                break;
+            case 'API':
+                if ($subject->getAuthor() === $user) {
+                    return true;
+                }
+
+                if ($this->security->isGranted("ROLE_API")) {
                     return true;
                 }
 

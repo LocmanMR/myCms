@@ -38,7 +38,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path('app_account') }}">Профиль</a>
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ROLE_USER') %}
                         <a class="dropdown-item" href="{{ path('app_admin_articles_create') }}">Создать статью</a>
                         {% endif %}
                         {% if (is_granted('ROLE_ADMIN_COMMENT')) or (is_granted('ROLE_ADMIN_TAG')) %}

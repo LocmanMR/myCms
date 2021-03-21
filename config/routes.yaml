@@ -1,3 +1,6 @@
-API_content_provider:
-    path: /api/v1/article_content
-    controller: App\API\ContentProviderController::articleContent
+#API_content_provider:
+#    path: /api/v1/article_content
+#    controller: App\Controller\Api\ContentProviderController::articleContentProvider
+#API_article_content:
+#    path: /api/v1/articles/{id}
+#    controller: App\Controller\Api\ContentProviderController::articleContent

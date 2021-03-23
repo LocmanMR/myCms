@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ContentProviderController extends AbstractController
 {
@@ -21,10 +22,15 @@ class ContentProviderController extends AbstractController
      * @var LoggerInterface
      */
     private LoggerInterface $apiLoggerLogger;
+    /**
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
 
-    public function __construct(LoggerInterface $apiLoggerLogger)
+    public function __construct(LoggerInterface $apiLoggerLogger, SerializerInterface $serializer)
     {
         $this->apiLoggerLogger = $apiLoggerLogger;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -62,14 +68,7 @@ class ContentProviderController extends AbstractController
     public function articleContent(Article $article): Response
     {
         return $this->json([
-            'id' => $article->getId(),
-            'title' => $article->getTitle(),
-            'slug' => $article->getSlug(),
-            'body' => $article->getBody(),
-            'description' => $article->getDescription(),
-            'keywords' => $article->getKeywords(),
-            'votes' => $article->getVoteCount(),
-            'published' => $article->getPublishedAt(),
+            'article' => $this->serializer->serialize($article, 'json', ['groups' => 'base']),
         ]);
     }
 

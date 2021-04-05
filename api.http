@@ -1,4 +1,13 @@
 ### Authorization by token, part 2. Use token to authorize.
-GET https://127.0.0.1:8000/api/v1/user
+#GET https://127.0.0.1:8000/api/v1/user
+#Accept: application/json
+#Authorization: Bearer 7d7876d3cbf38975ee36f1a8bdf6af4ee09bfa9c
+
+#GET https://localhost:8000/api/v1/article_content?paragraphs=3&word=Hello&wordCount=2
+#Accept: application/json
+#Cache-Control: no-cache
+
+GET https://localhost:8000/api/v1/articles/2
 Accept: application/json
-Authorization: Bearer 7d7876d3cbf38975ee36f1a8bdf6af4ee09bfa9c
+Cache-Control: no-cache
+Authorization: Bearer 038ddef68f080414003ab11a94278fdd472bbed9

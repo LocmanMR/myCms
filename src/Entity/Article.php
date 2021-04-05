@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -21,52 +22,56 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("base")
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("base")
      */
     private string $title;
 
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Groups("base")
      */
     private string $slug;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("base")
      */
     private string $description;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("base")
      */
     private string $body;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private string $author;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("base")
      */
     private ?string $keywords;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("base")
      */
     private ?string $voteCount;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("base")
      */
     private ?string $imageFilename;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("base")
      */
     private ?DateTimeInterface $publishedAt;
 
@@ -80,6 +85,12 @@ class Article
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="articles")
      */
     private $tags;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     public function __construct()
     {
@@ -136,18 +147,6 @@ class Article
     public function setBody(string $body): self
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }
@@ -281,6 +280,18 @@ class Article
     public function removeTag(Tag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

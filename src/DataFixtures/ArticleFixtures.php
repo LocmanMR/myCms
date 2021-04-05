@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Service\Interfaces\ArticleContentProviderInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,12 +17,6 @@ class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
         'Airflow vs Cron?',
         'Can I program without coffee?',
         'What is the best coffee?',
-    ];
-
-    private static array $articleAuthor = [
-        'IRR',
-        'RRA',
-        'IIR',
     ];
 
     private static array $articleKeywords = [
@@ -60,7 +55,7 @@ class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
             }
 
             $article
-                ->setAuthor($this->faker->randomElement(self::$articleAuthor))
+                ->setAuthor($this->getRandomReference(User::class))
                 ->setKeywords(implode(
                     ', ',
                     $this->faker->randomElements(self::$articleKeywords, 2, false))
@@ -84,7 +79,8 @@ class ArticleFixtures extends BaseFixtures implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            TagFixtures::class
+            TagFixtures::class,
+            UserFixtures::class,
         ];
     }
 

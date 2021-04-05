@@ -19,7 +19,7 @@
                                         <h5 class="mb-2">{{ article.title|capitalize }}</h5>
                                         <div class="d-flex mb-2">
                                             <div class="text-muted align-self-center">
-                                                <img class="article-author-img rounded-circle" src="{{ article.authorAvatarPath }}"> {{ article.author }}
+                                                <img class="article-author-img rounded-circle" src="{{ article.author.avatarUrl }}"> {{ article.author.firstName }}
                                             </div>
                                             <div class="text-muted align-self-center ml-3">
                                                 <i class="fas fa-clock size-is-"></i> {{ article.publishedAt ? article.publishedAt|ago }}

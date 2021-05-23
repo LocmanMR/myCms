@@ -20,15 +20,24 @@ class ArticleFormType extends AbstractType
         $this->userRepository = $userRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('description')
-            ->add('body')
-            ->add('keywords')
+            ->add('title', null, [
+                'label' => 'Заголовок',
+            ])
+            ->add('description', null, [
+                'label' => 'Описание',
+            ])
+            ->add('body', null, [
+                'label' => 'Содержание',
+            ])
+            ->add('keywords', null, [
+                'label' => 'Ключевые слова',
+            ])
             ->add('publishedAt', null, [
                 'widget' => 'single_text',
+                'label' => 'Опубликована',
             ])
             ->add('author', EntityType::class, [
                 'class' => User::class,
@@ -37,11 +46,12 @@ class ArticleFormType extends AbstractType
                 },
                 'placeholder' => 'Выберите автора статьи',
                 'choices' => $this->userRepository->findAllSortedByName(),
+                'label' => 'Автор',
             ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Article::class,

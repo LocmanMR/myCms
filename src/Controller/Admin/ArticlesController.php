@@ -7,7 +7,6 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ArticleFormType;
 use App\Repository\ArticleRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,6 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ArticlesController extends AbstractController
 {
+    protected const DEFAULT_ARTICLES_SHOW_CONT = 20;
+
     /**
      * @isGranted("ROLE_ADMIN_ARTICLE")
      * @Route("admin/articles", name="app_admin_articles")
@@ -41,7 +42,7 @@ class ArticlesController extends AbstractController
         $pagination = $paginator->paginate(
             $articlesQuery,
             $request->query->getInt('page', 1),
-            (int)$request->query->get('count') ?: 20
+            $request->query->getInt('count') ?: self::DEFAULT_ARTICLES_SHOW_CONT
         );
 
         return $this->render('admin/article/index.html.twig', [

@@ -26,7 +26,13 @@
                 </td>
                 <td>{{ article.description }}</td>
                 <td>{{ article.author.firstName }}</td>
-                <td><i class="fas fa-{{ article.isPublished ? 'check' : 'times' }}"></i></td>
+                <td>
+                    <i
+                        class="fas fa-{{ article.isPublished ? 'check' : 'times' }}"
+                        style="color: {{ article.isPublished ? 'green' : 'red' }}"
+                    >
+                    </i>
+                </td>
             </tr>
         {% else %}
             <tr>

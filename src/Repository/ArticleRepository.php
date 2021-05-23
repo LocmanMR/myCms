@@ -84,9 +84,10 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a');
 
+        $qb->leftJoin('a.author', 'u');
+
         if ($search) {
             $qb
-                ->leftJoin('a.author', 'u')
                 ->andWhere('a.body LIKE :search OR a.title LIKE :search OR u.firstName LIKE :search')
                 ->setParameter('search', "%$search%")
             ;

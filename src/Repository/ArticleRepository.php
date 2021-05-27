@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Enum\Dictionary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -65,7 +66,7 @@ class ArticleRepository extends ServiceEntityRepository
             ;
     }
 
-    private function latest(QueryBuilder $qb = null): QueryBuilder
+    public function latest(QueryBuilder $qb = null): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder($qb)->orderBy('a.publishedAt', 'DESC');
     }
@@ -77,5 +78,27 @@ class ArticleRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
     {
         return $qb ?? $this->createQueryBuilder('a');
+    }
+
+    public function searchArticles(?string $search, bool $withSoftDeleted = false): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->leftJoin('a.author', 'u');
+
+        if ($search) {
+            $qb
+                ->andWhere('a.body LIKE :search OR a.title LIKE :search OR u.firstName LIKE :search')
+                ->setParameter('search', "%$search%")
+            ;
+        }
+
+        if ($withSoftDeleted) {
+            $this->getEntityManager()->getFilters()->disable(Dictionary::DOCTRINE_DELETABLE_FILTER);
+        }
+
+        return $qb
+            ->orderBy('a.publishedAt', 'DESC')
+        ;
     }
 }

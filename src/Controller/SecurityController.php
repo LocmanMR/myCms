@@ -5,7 +5,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Enum\UserRoles;
+use App\Form\UserRegistrationFormType;
 use App\Security\LoginFormAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,10 +46,28 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guard,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        EntityManagerInterface $em
     ): Response {
-        if ($request->isMethod('POST')) {
-            $user = $this->madeNewUser($request, $passwordEncoder);
+        $form = $this->createForm(UserRegistrationFormType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $form->getData();
+
+            $user
+                ->setPassword($passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                ))
+                ->setIsActive(true)
+                ->setRoles([UserRoles::USER_ROLE_USER])
+            ;
+
+            $em->persist($user);
+            $em->flush();
 
             return $guard->authenticateUserAndHandleSuccess(
                 $user,
@@ -58,7 +78,7 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/register.html.twig', [
-            'error' => '',
+            'registrationForm' => $form->createView(),
         ]);
     }
 
@@ -68,26 +88,5 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    private function madeNewUser(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder
-    ): User {
-        $user = new User();
-
-        $user
-            ->setEmail($request->request->get('email'))
-            ->setFirstName($request->request->get('firstName'))
-            ->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')))
-            ->setIsActive(true)
-            ->setRoles([UserRoles::USER_ROLE_USER])
-        ;
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        return $user;
     }
 }

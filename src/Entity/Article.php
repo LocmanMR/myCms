@@ -10,13 +10,19 @@ use DateTimeInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @Assert\EnableAutoMapping()
  */
 class Article
 {
     use TimestampableEntity;
+
+    private const MIN_TITLE_LEN = 3;
+    private const MAX_DESCRIPTION_LEN = 100;
 
     /**
      * @ORM\Id
@@ -28,13 +34,15 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Title not be empty")
      * @Groups("base")
      */
-    private string $title;
+    private ?string $title;
 
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\DisableAutoMapping()
      * @Groups("base")
      */
     private string $slug;
@@ -58,10 +66,11 @@ class Article
     private ?string $keywords;
 
     /**
+     * @var int|string|null
      * @ORM\Column(type="integer", nullable=true)
      * @Groups("base")
      */
-    private ?string $voteCount;
+    private $voteCount;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -92,6 +101,22 @@ class Article
      */
     private $author;
 
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @Assert\DisableAutoMapping()
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     * @Assert\DisableAutoMapping()
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -108,7 +133,7 @@ class Article
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -168,7 +193,11 @@ class Article
         return $this->voteCount;
     }
 
-    public function setVoteCount(?int $voteCount): self
+    /**
+     * @param int|string $voteCount
+     * @return $this
+     */
+    public function setVoteCount($voteCount): self
     {
         $this->voteCount = $voteCount;
 
@@ -299,5 +328,41 @@ class Article
     public function isPublished(): bool
     {
         return null !== $this->getPublishedAt();
+    }
+
+    /**
+     * @Assert\Callback()
+     * @param ExecutionContextInterface $context
+     * @param $payload
+     */
+    public function validate(ExecutionContextInterface $context, $payload): void
+    {
+        if (!preg_match('/^\D+$/', $this->getTitle())) {
+            $context->buildViolation('Cannot use numbers in the title')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (mb_stripos($this->getTitle(), 'tea') !== false) {
+            $context->buildViolation('This blog just about coffee and developing!')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (strlen($this->getTitle()) <= self::MIN_TITLE_LEN) {
+            $context->buildViolation('Title must be longer')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (strlen($this->getDescription()) >= self::MAX_DESCRIPTION_LEN) {
+            $context->buildViolation('Description must be shorter 100 symbols')
+                ->atPath('description')
+                ->addViolation()
+            ;
+        }
     }
 }

@@ -56,18 +56,18 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UserRegistrationFormModel $userModel */
-            $userModel = $form->getData();
+            /** @var UserRegistrationFormModel $userRegisterFormDto */
+            $userRegisterFormDto = $form->getData();
 
             $user = new User();
 
             $user
-                ->setEmail($userModel->getEmail())
-                ->setFirstName($userModel->getFirstName())
+                ->setEmail($userRegisterFormDto->getEmail())
+                ->setFirstName($userRegisterFormDto->getFirstName())
 
                 ->setPassword($passwordEncoder->encodePassword(
                     $user,
-                    $userModel->getPlainPassword()
+                    $userRegisterFormDto->getPlainPassword()
                 ))
                 ->setIsActive(true)
                 ->setRoles([UserRoles::USER_ROLE_USER])

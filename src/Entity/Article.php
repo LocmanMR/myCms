@@ -21,9 +21,6 @@ class Article
 {
     use TimestampableEntity;
 
-    private const MIN_TITLE_LEN = 3;
-    private const MAX_DESCRIPTION_LEN = 100;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -50,6 +47,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="Description must be shorter")
      * @Groups("base")
      */
     private string $description;

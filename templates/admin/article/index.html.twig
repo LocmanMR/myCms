@@ -14,6 +14,7 @@
             <th>Описание</th>
             <th>Автор</th>
             <th>Опубликована</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
                     >
                     </i>
                 </td>
+                <td><a href="{{ path('app_admin_articles_edit', { id: article.id }) }}"><i class="fas fa-pen"></i></a></td>
             </tr>
         {% else %}
             <tr>

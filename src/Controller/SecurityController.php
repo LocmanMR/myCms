@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Enum\UserRoles;
+use App\Form\Model\UserRegistrationFormModel;
 use App\Form\UserRegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,6 +41,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler $guard
      * @param LoginFormAuthenticator $authenticator
+     * @param EntityManagerInterface $em
      * @return Response
      */
     public function register(
@@ -54,13 +56,18 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $form->getData();
+            /** @var UserRegistrationFormModel $userRegisterFormDto */
+            $userRegisterFormDto = $form->getData();
+
+            $user = new User();
 
             $user
+                ->setEmail($userRegisterFormDto->getEmail())
+                ->setFirstName($userRegisterFormDto->getFirstName())
+
                 ->setPassword($passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $userRegisterFormDto->getPlainPassword()
                 ))
                 ->setIsActive(true)
                 ->setRoles([UserRoles::USER_ROLE_USER])
@@ -87,6 +94,8 @@ class SecurityController extends AbstractController
      */
     public function logout(): void
     {
-        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException(
+            'This method can be blank - it will be intercepted by the logout key on your firewall.'
+        );
     }
 }

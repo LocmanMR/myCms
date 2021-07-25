@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\Model\UserRegistrationFormModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -15,38 +16,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserRegistrationFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class)
             ->add('firstName')
-            ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Enter password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Password must be longer 6 symbols',
-                    ]),
-                ],
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You must agree to the terms',
-                    ]),
-                ],
-            ])
+            ->add('plainPassword', PasswordType::class)
+            ->add('agreeTerms', CheckboxType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => UserRegistrationFormModel::class,
         ]);
     }
 }

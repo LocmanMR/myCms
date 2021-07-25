@@ -21,6 +21,9 @@ class Article
 {
     use TimestampableEntity;
 
+    private const MIN_TITLE_LEN = 3;
+    private const MAX_DESCRIPTION_LEN = 100;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -31,6 +34,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Title not be empty")
      * @Assert\NotBlank(message="Title not be empty")
      * @Assert\Length(min="4", minMessage="Title must be longer")
      * @Groups("base")
@@ -47,7 +51,6 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Length(max="100", maxMessage="Description must be shorter 100 symbols")
      * @Groups("base")
      */
     private string $description;
@@ -327,6 +330,42 @@ class Article
     public function isPublished(): bool
     {
         return null !== $this->getPublishedAt();
+    }
+
+    /**
+     * @Assert\Callback()
+     * @param ExecutionContextInterface $context
+     * @param $payload
+     */
+    public function validate(ExecutionContextInterface $context, $payload): void
+    {
+        if (!preg_match('/^\D+$/', $this->getTitle())) {
+            $context->buildViolation('Cannot use numbers in the title')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (mb_stripos($this->getTitle(), 'tea') !== false) {
+            $context->buildViolation('This blog just about coffee and developing!')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (strlen($this->getTitle()) <= self::MIN_TITLE_LEN) {
+            $context->buildViolation('Title must be longer')
+                ->atPath('title')
+                ->addViolation()
+            ;
+        }
+
+        if (strlen($this->getDescription()) >= self::MAX_DESCRIPTION_LEN) {
+            $context->buildViolation('Description must be shorter 100 symbols')
+                ->atPath('description')
+                ->addViolation()
+            ;
+        }
     }
 
     /**
